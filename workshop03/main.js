@@ -35,7 +35,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // TODO 1/2 Load schemans
+const citySchema = require('./schema/cityschema.json');
 
+new OpenAPIValidator(
+	{ apiSpecPath: __dirname + '/schema/city-api.yaml'}
+).install(app);
 
 
 
@@ -144,6 +148,7 @@ app.get(
 
 app.post(
 	'/api/city',
+	schemaValidator.validate({body: citySchema}),
 	(req, resp) => {
 		const data = req.body
 		console.info('>>data: ', data)
